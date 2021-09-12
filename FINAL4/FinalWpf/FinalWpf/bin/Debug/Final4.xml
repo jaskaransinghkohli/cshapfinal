@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AppointmentList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Appointments>
+    <Appointment>
+      <AppointmentId>554</AppointmentId>
+      <AppointmentType>Dental_Cleanings</AppointmentType>
+      <Datetime>11:00:00</Datetime>
+      <Location>Clinic</Location>
+      <Status>Pending</Status>
+      <PtntId>96</PtntId>
+    </Appointment>
+    <Appointment>
+      <AppointmentId>401</AppointmentId>
+      <AppointmentType>Dental_Cleanings</AppointmentType>
+      <Datetime>10:00:00</Datetime>
+      <Location>Clinic</Location>
+      <Status>Treated</Status>
+      <PtntId>45</PtntId>
+    </Appointment>
+    <Appointment>
+      <AppointmentId>649</AppointmentId>
+      <AppointmentType>Dental_Cleanings</AppointmentType>
+      <Datetime>12:00:00</Datetime>
+      <Location>Home_Treatement</Location>
+      <Status>Pending</Status>
+      <PtntId>96</PtntId>
+    </Appointment>
+  </Appointments>
+</AppointmentList>

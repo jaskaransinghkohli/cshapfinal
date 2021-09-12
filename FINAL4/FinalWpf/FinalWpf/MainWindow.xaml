@@ -1,0 +1,271 @@
+﻿<Window x:Class="FinalWpf.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FinalWpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="800">
+    <Grid>
+        <TabControl  HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="792">
+            <!--Add and View Patients-->
+            <TabItem Header="Add and View Patients">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="91*"/>
+                        <ColumnDefinition Width="30*"/>
+                        <ColumnDefinition Width="272*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.Resources>
+                        <local:Converter x:Key="MyConverter"/>
+                    </Grid.Resources>
+                    <Label Content="View And Add Patient Portal" HorizontalAlignment="Left" Margin="76,11,0,0" VerticalAlignment="Top" Height="41" Width="650" HorizontalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="3"/>
+                    <Label Content="When you click &quot;Add Patient&quot;, Patients can be reviewed here" HorizontalAlignment="Left" Margin="157.704,71,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+
+                    <TextBox x:Name="txt_patient_name" ToolTip="{Binding ElementName=txt_patient_name,  Path=(Validation.Errors)/ErrorContent}" HorizontalAlignment="Left" Height="23" Margin="136,109,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="3" >
+                        <TextBox.Text>
+                            <Binding Path="CP.PatientName"  >
+                                <Binding.ValidationRules>
+                                    <local:PatientNameRule/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+                    <ComboBox x:Name="cb_patient_gender" HorizontalAlignment="Left" Margin="137,163,0,0" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="3">
+                    </ComboBox>
+                    <TextBox x:Name="txt_patient_age" ToolTip="{Binding ElementName=txt_patient_age,  Path=(Validation.Errors)/ErrorContent}" HorizontalAlignment="Left" Height="23" Margin="135,217,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="3" DataContextChanged="AgeContextXhanges" >
+                        <TextBox.Text>
+                            <Binding Path="CP.PatientAge"  >
+                                <Binding.ValidationRules>
+                                    <local:PatientAgeRule MinAge="3" MaxAge="85"/>
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </TextBox.Text>
+                    </TextBox>
+
+                    <TextBox x:Name="txt_patient_Id" IsEnabled="False" Background="LightGray" HorizontalAlignment="Left" Height="23" Margin="136,274,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="3"/>
+
+                    <Button Content="Add Patient" x:Name="Add_patient"  HorizontalAlignment="Left" Margin="139,325,0,0" VerticalAlignment="Top" Width="167" Height="27" Background="Orange" Foreground="#FFEBEBEB" FontWeight="Bold" Click="Add_patient_Click" Grid.ColumnSpan="3"/>
+                    <Button Content="Edit" x:Name="Edit_Row"  HorizontalAlignment="Right" Margin="0,320,60.4,0" VerticalAlignment="Top" Width="167" Height="27" Background="Orange" Foreground="#FFEBEBEB" FontWeight="Bold" Click="Edit_Row_Click" Grid.Column="2"/>
+
+                    <DataGrid x:Name="dg_viewPatients" AutoGenerateColumns="false" HorizontalAlignment="Left" Height="191" Margin="120.704,106,0,0" VerticalAlignment="Top" Width="390" Grid.Column="2"   ItemsSource="{Binding Path=Patients}">
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow">
+                                <Setter Property="Background" Value="{Binding Path=., Converter={StaticResource MyConverter}}" />
+                            </Style>
+                        </DataGrid.RowStyle>
+                        <DataGrid.Columns>
+
+
+                            <DataGridTextColumn Binding="{Binding PatientId}" Header="Patient ID" Width="2*" />
+                            <DataGridTextColumn Binding="{Binding PatientName}" Header="Patient Name" Width="2*"/>
+                            <DataGridTextColumn Binding="{Binding PatientGender}" Header="Patient Gender" Width="2*" />
+                            <DataGridTextColumn Binding="{Binding PatientAge}" Header="Patient Age" Width="2*" />
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label Content="Patient Name:" HorizontalAlignment="Left" Margin="50,108,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Label Content="Patient Gender:" HorizontalAlignment="Left" Margin="39,159,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Label Content="Patient Age:" HorizontalAlignment="Left" Margin="57,212,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right" RenderTransformOrigin="0.548,1.385"/>
+                    <Label Content="Patient Id:" HorizontalAlignment="Left" Margin="67,271,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Button Content="Delete" x:Name="Button_Delete_Patient" Click="Button_Delete_Patient_Click" HorizontalAlignment="Left" Margin="122.704,320,0,0" VerticalAlignment="Top" Width="75" Background="Orange" Foreground="#FFFCFAFA" Grid.Column="2"/>
+                    <Label Content="Removes Patient" HorizontalAlignment="Left" Margin="117.704,344,0,0" VerticalAlignment="Top" Width="100" Foreground="Red" FontStyle="Italic"  Grid.Column="2"/>
+
+                    <!--<TextBox x:Name="textBoxPatientNameSearch"  HorizontalAlignment="Left" Height="20" Margin="309.704,320,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" TextChanged="textBoxPatientNameSearch_TextChanged" Grid.Column="2"  />-->
+                    <!--<Button Content="Search" x:Name="PatientSearch" HorizontalAlignment="Left" Margin="434.704,320,0,0" VerticalAlignment="Top" Width="60" Click="PatientSearch_Click"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="2"/>-->
+                    <Button Content="Update" x:Name="UpdatePatient" HorizontalAlignment="Left" Margin="122.704,381,0,0" Click="UpdatePatient_Click" VerticalAlignment="Top" Width="75"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="2"/>
+                    <Label Content="Inline Updates Patients" HorizontalAlignment="Left" Margin="107.6,405,0,0" VerticalAlignment="Top" Width="140" FontStyle="Italic" Foreground="Red"  Grid.Column="2"/>
+
+                    <Button Content="Refresh" x:Name="RefreshPatient" HorizontalAlignment="Left" Margin="357.704,380,0,0" Click="RefreshPatient_Click" VerticalAlignment="Top" Width="60"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="2"/>
+                    <Label Content="Refresh Patients List" HorizontalAlignment="Left" Margin="327.704,405,0,0" VerticalAlignment="Top" Width="120" FontStyle="Italic" Foreground="Red"  Grid.Column="2"/>
+                    <Label x:Name="nameError" Content="nameError" HorizontalAlignment="Left" Margin="135,132,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="166" Visibility="Hidden" Foreground="Red"/>
+                    <Label x:Name="genderError" Content="patientError" HorizontalAlignment="Left" Margin="135,185,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="166" Visibility="Hidden" Foreground="Red"/>
+                    <Label x:Name="ageError" Content="ageError" HorizontalAlignment="Left" Margin="135,240,0,0" VerticalAlignment="Top" Grid.ColumnSpan="3" Width="166" Visibility="Hidden" Foreground="Red"/>
+                    <Button Content="View Patients" x:Name="displayPatient"  HorizontalAlignment="Left" Margin="136,386,0,0" VerticalAlignment="Top" Width="167" Height="27" Background="Orange" Foreground="#FFEBEBEB" FontWeight="Bold"  Grid.ColumnSpan="3" Click="displayPatient_Click"/>
+                    <Button x:Name="SaveUpdatedPatient" Background="Orange"  Grid.ColumnSpan="3" Content="Save" HorizontalAlignment="Left" Margin="137,430,0,0" VerticalAlignment="Top" Width="166" Height="28"  Foreground="#FFEBEBEB" Click="SavePatient_update"/>
+
+
+                    <!-- <Grid.Background>
+                        <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+                    </Grid.Background>
+                    -->
+                </Grid>
+            </TabItem>
+
+            <!--Add Apointment-->
+            <TabItem Header="Add and View Appointment">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="182*"/>
+                        <ColumnDefinition Width="468*"/>
+                        <ColumnDefinition Width="137*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="View And Fix Appointment Portal" HorizontalAlignment="Left" Margin="76,11,0,0" VerticalAlignment="Top" Height="41" Width="650" HorizontalContentAlignment="Center" FontSize="20" Grid.ColumnSpan="3"/>
+                    <Label Content="When you click &quot;Book Appointment&quot;,Appointments can be reviewed here" HorizontalAlignment="Left" Margin="182.4,75,0,0" VerticalAlignment="Top" Grid.Column="1" Grid.ColumnSpan="2"/>
+
+                    <ComboBox x:Name="comboBoxAppointmentType" HorizontalAlignment="Left" Margin="136,142,0,0" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="2" />
+                    <ComboBox x:Name="comboBoxLocation" HorizontalAlignment="Left" Margin="136,202,0,0" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="2"/>
+                    <ComboBox x:Name="comboBoxPatientId" HorizontalAlignment="Left" Margin="138,244,0,0" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="2"/>
+                    <!-- <DatePicker x:Name="dateAppointment" HorizontalAlignment="Left" Margin="136,260,0,0" VerticalAlignment="Top" Width="169" Grid.ColumnSpan="2"/>-->
+                    <ComboBox x:Name="timeSlot" SelectedValue="00:00:00" HorizontalAlignment="Left" Margin="138,301,0,0" VerticalAlignment="Top" Width="167" Height="20" SelectionChanged="ComboBox_SelectionChanged" Grid.ColumnSpan="2">
+                        <ComboBoxItem Content="10:20:00" Selected="TimeSelected"/>
+                    </ComboBox>
+                    <Button Content="Book Appointment" x:Name="Book_Appointment"  HorizontalAlignment="Left" Margin="136,365,0,0" VerticalAlignment="Top" Width="167" Height="27" Background="Orange" Foreground="#FFEBEBEB" FontWeight="Bold" Click="Book_Appointment_Click"  Grid.ColumnSpan="2"/>
+                    <DataGrid x:Name="dg_viewAppointments" AutoGenerateColumns="false" HorizontalAlignment="Left" Height="191" Margin="181.4,106,0,0" VerticalAlignment="Top" Width="420" Grid.Column="1" ItemsSource="{Binding Path=Appointments}" Grid.ColumnSpan="2">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Binding="{Binding AppointmentId}" Header="Appointment ID" Width="1.5*" />
+                            <DataGridTextColumn Binding="{Binding AppointmentType}" Header="Service" Width="*"/>
+                            <DataGridTextColumn Binding="{Binding Location}" Header="Location" Width="*" />
+                            <DataGridTextColumn Binding="{Binding Datetime}" Header="Time" Width="*" />
+
+                            <DataGridTextColumn Binding="{Binding PtntId}" Header="Patient ID" Width="*" />
+                            <DataGridTextColumn Binding="{Binding Status}" Header="Status" Width="*" />
+
+
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <Label Content="Service :" HorizontalAlignment="Left" Margin="60,142,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Label Content="Location:" HorizontalAlignment="Left" Margin="60,200,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Label Content="Patient ID:" HorizontalAlignment="Left" Margin="54,241,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Right"/>
+                    <Label Content="Time Slot" HorizontalAlignment="Left" Margin="28,299,0,0" VerticalAlignment="Top" Height="23" Width="90" HorizontalContentAlignment="Right"/>
+                    <Button Content="Change to Treated" x:Name="Change_Status" Click="Change_Status_Click"  HorizontalAlignment="Left" Margin="183.4,320,0,0" VerticalAlignment="Top" Width="125" Background="Orange" Foreground="#FFFCFAFA" Grid.Column="1"/>
+                    <Label Content="Change status of patient" HorizontalAlignment="Left" Margin="178.4,344,0,0" VerticalAlignment="Top" Width="140" Foreground="Red" FontStyle="Italic"  Grid.Column="1"/>
+
+                    <TextBox x:Name="textBoxPtntNameSearch" HorizontalAlignment="Left" Height="20" Margin="370.4,320,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"   Grid.Column="1" Grid.ColumnSpan="2"  />
+                    <Button Content="Search" x:Name="PntntSearch" HorizontalAlignment="Left" Margin="27.3,320,0,0" VerticalAlignment="Top" Width="60" Click="PntntSearch_Click"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="2"/>
+                    <Label Content="Search Treated by Patient Id " HorizontalAlignment="Left" Margin="378.4,344,0,0" VerticalAlignment="Top" Width="168" FontStyle="Italic" Foreground="Red"  Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <ComboBox x:Name="comboboxServicePending" HorizontalAlignment="Left" Margin="158.4,380,0,0" VerticalAlignment="Top" Width="120" Height="20" Grid.Column="1" />
+                    <Button Content="Search" x:Name="PendingSearch" HorizontalAlignment="Left" Margin="289.4,380,0,0" VerticalAlignment="Top" Width="60" Click="PendingSearch_Click"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="1"/>
+                    <Label Content="Search Pending Using Appointment Type " HorizontalAlignment="Left" Margin="140.4,405,0,0" VerticalAlignment="Top" Width="198" FontStyle="Italic" Foreground="Red"  Grid.Column="1"/>
+
+                    <Button Content="Update" x:Name="button_update" HorizontalAlignment="Left" Margin="430.4,380,0,0" Click="button_update_Click"  VerticalAlignment="Top" Width="60"  Background="Orange" Foreground="#FFFCFAFA" Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Label Content="Updates List" HorizontalAlignment="Left" Margin="420.4,405,0,0" VerticalAlignment="Top" Width="80" FontStyle="Italic" Foreground="Red"  Grid.Column="1" Grid.ColumnSpan="2"/>
+                    <Button x:Name="button_Back" Content="Back" HorizontalAlignment="Left" Margin="317.4,451,0,0" VerticalAlignment="Top" Width="75" Click="button_Back_Click"  Grid.Column="1" Background="Orange"  Foreground="#FFFFFDFD"/>
+                    <Label x:Name="serviceError" Content="serviceError :" HorizontalAlignment="Left" Margin="138,162,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="165" Visibility="Hidden" Foreground="Red"/>
+                    <Label x:Name="patientError" Content="patientError :" HorizontalAlignment="Left" Margin="136,269,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="165" Visibility="Hidden" Foreground="Red"/>
+                    <Label x:Name="timeError" Content="timeError :" HorizontalAlignment="Left" Margin="136,322,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="165" Visibility="Hidden" Foreground="Red"/>
+
+                    <!-- 
+        <Grid.Background>
+            <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+        </Grid.Background>
+        -->
+                </Grid>
+            </TabItem>
+
+
+
+            <!--added by akhil-->
+
+
+            <!--View And Add Reviews-->
+            <!--Register Employee-->
+            <TabItem Header="Add User">
+                <StackPanel HorizontalAlignment="Left" Height="421" VerticalAlignment="Top" Width="793" Margin="0,0,0,-0.333">
+                    <Grid Height="420" Margin="0,0,0.333,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="688*"/>
+                            <ColumnDefinition Width="105*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Label Content="Register new employee"  HorizontalAlignment="Left" Margin="286,24,0,0" VerticalAlignment="Top" Width="262" FontSize="18" Height="34"/>
+                        <Label Content="Username" HorizontalAlignment="Left" Margin="274,107,0,0" VerticalAlignment="Top" Height="26" Width="63"/>
+
+                        <TextBox x:Name="txt_empUserName" ToolTip="{Binding ElementName=txt_empUserName,  Path=(Validation.Errors)/ErrorContent}" HorizontalAlignment="Left" Height="23" Margin="352,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120">
+                            <TextBox.Text>
+                                <Binding Path="EmpUsername"  >
+                                    <Binding.ValidationRules>
+                                        <local:EmployeeUserNameRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+
+                        <Label Content="Password" HorizontalAlignment="Left" Margin="274,159,0,0" VerticalAlignment="Top" Height="26" Width="60"/>
+                        <PasswordBox x:Name="pb_empPassword"  HorizontalAlignment="Left" Margin="352,159,0,0" VerticalAlignment="Top" Height="23" Width="120"/>
+                        <Label Content="Employee ID" HorizontalAlignment="Left" Margin="257,225,0,0" VerticalAlignment="Top" Height="26" Width="77" RenderTransformOrigin="0.545,0.115"/>
+
+                        <Button Content="Register" x:Name="Button_registerEmployee" Click="Button_registerEmployee_Click"  HorizontalAlignment="Left" Margin="303,285,0,0" VerticalAlignment="Top" Background="Orange" Foreground="#FFFCFAFA" Width="150" Height="20" />
+                        <Label x:Name="usernameError" Content="Username" HorizontalAlignment="Left" Margin="352,128,0,0" VerticalAlignment="Top" Width="120" Foreground="Red" Visibility="Hidden" Height="26"/>
+                        <Label x:Name="passwordError" Content="Password" HorizontalAlignment="Left" Margin="352,179,0,0" VerticalAlignment="Top" Width="305" Foreground="Red" Height="59" Visibility="Hidden"/>
+                        <TextBox x:Name="employeeId" HorizontalAlignment="Left" Height="23" Margin="352,225,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
+
+                        <!-- 
+        <Grid.Background>
+            <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+        </Grid.Background>
+        -->
+
+                    </Grid>
+                </StackPanel>
+
+            </TabItem>
+
+            <!--View Employees-->
+            <TabItem Header="View Users">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="8*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="9*"/>
+                        <ColumnDefinition Width="33*"/>
+                        <ColumnDefinition Width="727*"/>
+                    </Grid.ColumnDefinitions>
+                    <DataGrid x:Name="EmployeeGrid" HorizontalAlignment="Left" Height="214" Margin="0,10,0,0" VerticalAlignment="Top" Width="788"  AutoGenerateColumns="False" Grid.ColumnSpan="5" CanUserAddRows="False" >
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Employee Id"  Binding="{Binding EmpId}" />
+                            <DataGridTextColumn Header="Username" Binding="{Binding EmpUsername}"/>
+                            <DataGridTextColumn Header="Password" Binding="{Binding EmpPassword}"/>
+
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+
+                    <!-- 
+        <Grid.Background>
+            <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+        </Grid.Background>
+        -->
+                </Grid>
+
+            </TabItem>
+
+
+
+            <!--Logout-->
+            <TabItem Header="Logout">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="53*"/>
+                        <ColumnDefinition Width="723*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Final 4 Dental Clinic" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="232.8,27,0,0" FontWeight="Bold" FontSize="24"/>
+                    <Label Content="Making Your Teeths perfect Since Ages !!" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="2" Margin="205.8,74,0,0" FontStyle="Italic" FontSize="16"/>
+                    <Label Content="Are you sure to Logout from the System ?" Grid.Column="2" HorizontalAlignment="Left" Margin="211.8,163,0,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="14" Foreground="Black"/>
+                    <Button x:Name="LogoutEmployee" Click="LogoutEmployee_Click" Content="Logout" Grid.Column="2" HorizontalAlignment="Left" Margin="264.8,239,0,0" VerticalAlignment="Top" Width="165" Height="45" IsCancel="True" Background="Orange" Foreground="#FFFCF8F8" FontWeight="Bold" FontSize="14"/>
+                    <!-- 
+        <Grid.Background>
+            <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+        </Grid.Background>
+        -->
+                </Grid>
+
+            </TabItem>
+
+
+
+
+
+
+        </TabControl>
+
+        <!-- 
+        <Grid.Background>
+            <ImageBrush ImageSource="123.jpg" Opacity="0.45"/>
+        </Grid.Background>
+        -->
+    </Grid>
+</Window>
